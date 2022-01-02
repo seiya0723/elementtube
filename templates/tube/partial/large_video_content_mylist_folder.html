@@ -1,0 +1,56 @@
+{% load static %}
+{% load humanize %}
+{% load param_change %}
+
+
+<div class="large_content_area">
+
+    {% for mylist in mylists %}
+    <div class="large_content">
+
+        <label class="large_content_inner">
+            <input class="delete_mylist_chk" type="checkbox" name="delete_mylist[]" value="{{ mylist.id }}">
+
+            <div class="large_content_views_area">
+                <div class="large_content_views_dt">{{ mylist.dt|date:"Y年m月d日 H時i分s秒" }}</div>
+            </div>
+
+            <!--それぞれ必要な部分だけリンクタグで囲む-->
+            <div class="large_content_thumbnail_area">
+                {% if mylist.target.thumbnail %}
+                <a class="video_list_thumbnail" href="{% url 'tube:single' mylist.target.id %}"><img src="{{ mylist.target.thumbnail.url }}" alt="thumbnail"></a>
+                {% else %}
+                <a class="video_list_thumbnail" href="{% url 'tube:single' mylist.target.id %}"><img src="{% static 'tube/img/no-img.png' %}" alt="thumbnail"></a>
+                {% endif %}
+            </div>
+            <div class="large_content_description_area">
+                <div class="large_content_description_title">{{ mylist.target.title|truncatechars_html:15 }}</div>
+                <div class="large_content_description_detail"><i class="far fa-play-circle"></i> {{ mylist.target.view_true|length|intcomma }}</div>
+                <div class="large_content_description_detail"><i class="far fa-comment"></i> {{ mylist.target.comment.all|length|intcomma }}</div>
+                <div class="large_content_description_detail"><i class="fas fa-list"></i> {{ mylist.target.mylist.all|length|intcomma }}</div>
+
+                <div class="large_content_description_detail"><i class="far fa-thumbs-up"></i> {{ mylist.target.good.all|length|intcomma }}</div>
+                <div class="large_content_description_detail"><i class="far fa-thumbs-down"></i> {{ mylist.target.bad.all|length|intcomma }}</div>
+                <div class="large_content_description_body">{{ mylist.target.description|truncatechars_html:20 }}</div>
+
+            </div>
+            <div class="large_content_control_area">
+                <button class="large_content_control_button mylist_delete_button" value="{{ mylist.id }}">マイリストを削除</button>
+            </div>
+
+            <!--チェックモードの時、リンクを発動させないよう上からかぶせる。-->
+            <div class="large_content_inner_cover"></div>
+        </label>
+    </div>
+    {% endfor %}
+</div>
+
+{% if mylists.has_previous or mylists.has_next %}
+<div class="pagination_area">
+    <a   class="pagination_content pagination_button" {% if mylists.has_previous %}href="?{% url_replace request 'page' mylists.previous_page_number %}"{% endif %}>Prev</a>
+    <div class="pagination_content">{{ mylists.number }}</div>
+    <a   class="pagination_content pagination_button" {% if mylists.has_next %}href="?{% url_replace request 'page' mylists.next_page_number %}"{% endif %}>Next</a>
+</div>
+{% endif %}
+
+

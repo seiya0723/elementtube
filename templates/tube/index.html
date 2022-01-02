@@ -1,0 +1,116 @@
+{% extends "tube/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+{{ block.super }}
+<script src="{% static 'tube/js/slider.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+
+{% include "tube/search_form.html" %}
+
+    {% if histories %}
+    <h2>もう一度見る</h2>
+
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for history in histories %}
+            <div class="data_preview_frame">
+                <a href="{% url 'tube:single' history.target.id  %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ history.target.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ history.target.title }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    {% endif %}
+    
+    {% if latests %}
+    <h2>新着動画</h2>
+
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for latest in latests %}
+            <div class="data_preview_frame">
+                <a href="{% url 'tube:single' latest.id  %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ latest.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ latest.title }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    {% endif %}
+
+
+    {% if goods %}
+    <h2>最近いいねした動画</h2>
+
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for good in goods %}
+            <div class="data_preview_frame">
+                <a href="{% url 'tube:single' good.id  %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ good.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ good.title }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    {% endif %}
+
+
+    {% if comments %}
+    <h2>最近コメントした動画</h2>
+
+
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for comment in comments %}
+            <div class="data_preview_frame">
+                <a href="{% url 'tube:single' comment.id  %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ comment.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ comment.title }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    {% endif %}
+
+    {% if mylists %}
+    <h2>最近マイリストした動画</h2>
+
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for mylist in mylists %}
+            <div class="data_preview_frame">
+                <a href="{% url 'tube:single' mylist.id  %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ mylist.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ mylist.title }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    {% endif %}
+
+
+{% endblock %}
+

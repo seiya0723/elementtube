@@ -1,0 +1,39 @@
+body{
+    margin:0;
+    color:#a9a9b3;
+    background:#252627;
+}
+main a {
+    color:orange;
+}
+
+input[type="text"],input[type="email"],input[type="password"] {
+    font-size:1rem;
+    padding:0.25rem;
+    margin:0.25rem 0;
+    border:solid 0.25rem orange;
+    background:black;
+    color:white;
+    transition:0.2s;
+    
+}
+input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus {
+    box-shadow:0px 0px 5px 2px  orange;
+    transition:0.2s;
+    outline:none;
+}
+
+button[type="submit"] {
+    padding:0.5rem 2rem;
+    color:#a9a9b3;
+    background:#252627;
+    border:solid 0.15rem orange;
+    border-radius: 0.25rem;
+    cursor:pointer;
+    transition:0.2s;
+}
+button[type="submit"]:hover {
+    background:orange;
+    color:white;
+    transition:0.2s;
+}

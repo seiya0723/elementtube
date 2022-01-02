@@ -1,0 +1,28 @@
+<!--おそらくこれは使わないかも知れない。-->
+
+{% load static %}
+<div class="video_content_list">
+    {% for video in videos %}
+    <div class="video_content">
+        <a class="video_content_link" href="{% url 'tube:single' video.target.id %}">
+            {% if video.target.thumbnail %}
+            <img class="video_thumbnail" src="{{ video.target.thumbnail.url }}" alt="{{ video.target.title }}">
+            {% else %}
+            <img class="video_thumbnail" src="{% static 'tube/img/no-img.png' %}" alt="{{ video.target.title }}">
+            {% endif %}
+            <div class="video_title">{{ video.target.title }}</div>
+            <div>
+                <!--ここ、どうやって回数を表現する？-->
+                <i class="far fa-play-circle"></i>{{ video.target,videoview }}
+                {% comment %}
+                <i class="far fa-comment"></i>{{}}
+                <i class="fas fa-list"></i>{{}}
+                {% endcomment %}
+            </div>
+        </a>
+    </div>
+    {% empty %}
+    <div class="video_content"><p>動画がありません。</p></div>
+    {% endfor %}
+</div>
+

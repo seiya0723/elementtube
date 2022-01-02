@@ -1,0 +1,23 @@
+{% for comment in comments %}
+<div class="comment_area">
+    <div class="comment_username">{{ comment.user.handle_name }}</div>
+
+    <div class="comment_content_area">
+        <div class="comment_thumbnail"><i class="fas fa-user"></i></div>
+        <div class="comment_content">{{ comment.content }}</div>
+    </div>
+    <div class="comment_dt">{{ comment.dt|date:"Y年m月d日 H時i分s秒" }}</div>
+</div>
+{% endfor %}
+
+{% if comments %}
+<form id="comment_pagination_area" class="pagination_area" action="{% url 'tube:single_mod' video.id %}" method="GET">
+    <button class="pagination_content pagination_button comment_page" type="button" {% if comments.has_previous %}value="{{ comments.previous_page_number }}"{% endif %}>Prev</button>
+    <div class="pagination_content">{{ comments.number }}</div>
+    <button class="pagination_content pagination_button comment_page" type="button" {% if comments.has_next %}value="{{ comments.next_page_number }}"{% endif %}>Next</button>
+</form>
+{% endif %}
+
+
+
+

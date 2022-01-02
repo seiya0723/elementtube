@@ -1,0 +1,47 @@
+{% extends "tube/base.html" %}
+{% load static %}
+{% load param_change %}
+
+{% block extra_head %}
+{{ block.super }}
+<script>
+    const PATH              = {};
+    PATH["mylist"]          = "{% url 'tube:mylist' %}";
+    PATH["mylist_folder"]   = "{% url 'tube:mylist_folder' %}";
+</script>
+<script src="{% static 'tube/js/mylist.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+<h2><a href="{% url 'tube:mylist' %}">マイリスト</a></h2>
+
+<div class="mylist_multi_area">
+    <input id="mylist_multi_chk" class="mylist_multi_chk" type="checkbox">
+
+    <select id="mylist_multi_select_form" class="mylist_multi_select_form select_form">
+        {% for f in folders %}
+        <option value="{{ f.id }}">{{ f.title }}</option>
+        {% endfor %}
+    </select>
+
+    <div class="mylist_multi_move multi_button">選択したマイリストを移動</div>
+    <div class="mylist_multi_delete multi_button">選択したマイリストを削除</div>
+    <label class="mylist_multi_label" for="mylist_multi_chk">
+        <div class="mylist_multi_select multi_button">複数選択</div>
+        <div class="mylist_multi_cancel multi_button">キャンセル</div>
+    </label>
+</div>
+
+<input id="mylist_tab_radio_1" class="mylist_tab_radio" type="radio" name="mylist_tab">
+<input id="mylist_tab_radio_2" class="mylist_tab_radio" type="radio" name="mylist_tab" checked>
+
+<div class="mylist_tab_label_area">
+    <label class="mylist_tab_label" for="mylist_tab_radio_1">設定</label>
+    <label class="mylist_tab_label" for="mylist_tab_radio_2">{% if folder.title %}{{ folder.title }}{% else %}未分類{% endif %}</label>
+</div>
+
+<div id="mylist_tab_body_1" class="mylist_tab_body">{% include "tube/mylist/folder_config.html" %}</div>
+<div id="mylist_tab_body_2" class="mylist_tab_body">{% include "tube/partial/large_video_content_mylist_folder.html" %}</div>
+
+{% endblock %}
+

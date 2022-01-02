@@ -1,0 +1,27 @@
+{% load static %}
+{% load humanize %}
+
+<div class="video_content_list">
+{% for video in videos %}
+    <div class="video_content">
+        <a class="video_content_link" href="{% url 'tube:single' video.id %}">
+            {% if video.thumbnail %}
+            <img class="video_thumbnail" src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+            {% else %}
+            <img class="video_thumbnail" src="{% static 'tube/img/no-img.png' %}" alt="{{ video.title }}">
+            {% endif %}
+            <div class="video_title">{{ video.title }}</div>
+            <div>{{ video.user.handle_name }}</div>
+            <i class="far fa-play-circle"></i>{{ video.view_true|length|intcomma }}
+            <i class="far fa-comment"></i>{{ video.comment.all|length|intcomma }}
+            <i class="fas fa-list"></i>{{ video.mylist.all|length|intcomma }}
+            <i class="far fa-thumbs-up"></i> {{ video.good.all|length|intcomma }}
+            <i class="far fa-thumbs-down"></i> {{ video.bad.all|length|intcomma }}
+        </a>
+    </div>
+    {% empty %}
+    <div class="video_content"><p>動画がありません。</p></div>
+    {% endfor %}
+</div>
+
+

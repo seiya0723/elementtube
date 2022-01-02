@@ -1,0 +1,103 @@
+{% extends "tube/base.html" %}
+{% load static %}
+{% load param_change %}
+
+{% block extra_head %}
+{{ block.super }}
+{% endblock %}
+
+{% block main %}
+{% include "tube/search_form.html" %}
+
+<h2><a href="{% url 'tube:news' %}">ニュース</a></h2>
+
+<!--私のブログとほぼ同じ形式で良い。左メインエリア、右サイドバー(スマホ表示時折り返し)-->
+<div class="news_body_area">
+    <div class="news_main_area">
+        <div class="news_main_inner">
+
+            {% if article %}
+            <div class="news_single">
+                <div class="news_title">{{ article.title }}</div>
+                <div class="news_detail_area">
+                    <div>カテゴリ <a class="news_detail_link" href="{% url 'tube:news' %}?category={{ article.category.name }}">{{ article.category.name }}</a></div>
+                    <div>作成日 {{ article.dt }}</div>
+                </div>
+                <div class="news_content_area">{{ article.content|linebreaksbr|urlize }}</div>
+            </div>
+
+            {% elif articles %}
+
+            {% for article in articles %}
+            <div class="news_list">
+                <a   class="news_title" href="{% url 'tube:news_single' article.id %}">{{ article.title }}</a>
+                <div class="news_detail_area">
+                    <div>カテゴリ <a class="news_detail_link" href="{% url 'tube:news' %}?category={{ article.category.name }}">{{ article.category.name }}</a></div>
+                    <div>作成日 {{ article.dt }}</div>
+                </div>
+                <div class="news_content_area">{{ article.content|truncatechars_html:100 }}</div>
+                <div class="news_read_button_area">
+                    <a class="news_read_button" href="{% url 'tube:news_single' article.id  %}">続きを読む</a>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!--TODO:ここのページネーション部、検索と同じなのでinclude+withで別テンプレート化すれば良いのでは？-->
+            <div class="pagination_area">
+                <a   class="pagination_content pagination_button" {% if articles.has_previous %}href="?{% url_replace request 'page' articles.previous_page_number %}"{% endif %}>Prev</a>
+                <div class="pagination_content">{{ articles.number }}</div>
+                <a   class="pagination_content pagination_button" {% if articles.has_next %}href="?{% url_replace request 'page' articles.next_page_number %}"{% endif %}>Next</a>
+            </div>
+
+            {% else %}
+            <div class="news_not_found">記事は見つかりませんでした</div>
+            {% endif %}
+
+        </div>
+    </div>
+    
+    <div class="news_sidebar_area">
+        <div class="news_sidebar_inner">
+
+            <div class="sidebar_container">
+                <h3>検索</h3>
+                <form class="search_form sidebar_form" action="{% url 'tube:news' %}" method="GET">
+                    <input class="search_form_word sidebar_font" type="text" name="search" placeholder="記事検索">
+                    <input class="search_form_submit sidebar_font sidebar_submit" type="submit" value="検索">
+                </form>
+            </div>
+
+            <div class="sidebar_container">
+                <h3>月別アーカイブ</h3>
+                {% for a in monthly %}
+                <div>
+                    <a class="sidebar_link" href="{% url 'tube:news' %}?year={{ a.monthly_dt.year }}&month={{ a.monthly_dt.month }}">{{ a.monthly_dt|date:"Y年n月" }} ({{ a.num }})</a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="sidebar_container">
+                <h3>カテゴリ</h3>
+                {% for a in categories %}
+                <div>
+                    <a class="sidebar_link" href="{% url 'tube:news' %}?category={{ a.name }}">{{ a.name }} ({{ a.num }})</a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="sidebar_container">
+                <h3>新着記事</h3>
+                {% for a in latests %}
+                <div>
+                    <a class="sidebar_link" href="{% url 'tube:news_single' a.id %}">{{ a.title }}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+

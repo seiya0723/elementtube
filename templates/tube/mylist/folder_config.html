@@ -1,0 +1,44 @@
+{% load static %}
+
+{% if folder.title %}
+
+<h3>{{ folder.title }}を削除する</h3>
+
+<form class="mylist_form">
+    <input class="input_form_button" type="button" value="削除">
+</form>
+
+<h3>{{ folder.title }}を編集する</h3>
+
+<form id="mylist_folder_edit_form" action="{% url 'tube:mylist_folder_single' folder.id %}" class="mylist_form">
+    {% csrf_token %}
+
+    <div class="mylist_form_line">
+        <div class="mylist_form_line_description">{{ folder.title }} を公開する</div>
+        <div class="mylist_form_line_control">
+            <input id="mylist_form_chk_1" class="mylist_form_chk" type="checkbox" name="public" {% if folder.public %}checked{% endif %}><label class="mylist_form_label" for="mylist_form_chk_1"></label>
+        </div>
+    </div>
+
+    <div class="mylist_form_line">
+        <div class="mylist_form_line_description">{{ folder.title }} を検索で表示する</div>
+        <div class="mylist_form_line_control">
+            <input id="mylist_form_chk_2" class="mylist_form_chk" type="checkbox" name="search" {% if folder.search %}checked{% endif %}><label class="mylist_form_label" for="mylist_form_chk_2"></label>
+        </div>
+    </div>
+
+    <input class="input_form_text" type="text" name="title" placeholder="フォルダ名" value="{{ folder.title }}">
+    <textarea class="textarea_form" name="description" placeholder="説明文">{{ folder.description }}</textarea>
+        
+    <input id="mylist_folder_edit_submit" class="input_form_button" type="button" value="編集">
+</form>
+
+
+
+{% else %}
+<div>未分類フォルダは設定できません</div>
+{% endif %}
+
+
+
+

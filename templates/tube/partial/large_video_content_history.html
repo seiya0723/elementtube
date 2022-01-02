@@ -1,0 +1,92 @@
+{% load static %}
+{% load humanize %}
+
+<!-- 
+    
+    Amazon風再度購入に似たの大きめのコンテナを横並びに表示させる。
+
+    TODO
+
+    ・削除ボタン(Ajax仕様)
+    ・マイリスト数、再生数、コメント数の表示
+    
+    
+    TODO:複数選択モードは、タブシステムをクリックすると必ず無効化する
+
+-->
+
+<div class="large_content_area">
+
+    {% for history in histories %}
+    <div class="large_content">
+        
+        <label class="large_content_inner">
+            <input class="delete_history_chk" type="checkbox" name="delete_history[]" value="{{ history.id }}">
+
+            <div class="large_content_views_area">
+                <div class="large_content_views_dt">{{ history.dt|date:"Y年m月d日 H時i分s秒" }}</div>
+                <div class="large_content_views_count">{{ history.views|intcomma }}回視聴</div>
+            </div>
+
+            <!--それぞれ必要な部分だけリンクタグで囲む-->
+            <div class="large_content_thumbnail_area">
+                {% if history.target.thumbnail %}
+                <a class="video_list_thumbnail" href="{% url 'tube:single' history.target.id %}"><img src="{{ history.target.thumbnail.url }}" alt="thumbnail"></a>
+                {% else %}
+                <a class="video_list_thumbnail" href="{% url 'tube:single' history.target.id %}"><img src="{% static 'tube/img/no-img.png' %}" alt="thumbnail"></a>
+                {% endif %}
+            </div>
+            <div class="large_content_description_area">
+                <div class="large_content_description_title">{{ history.target.title|truncatechars_html:15 }}</div>
+                <div class="large_content_description_detail"><i class="far fa-play-circle"></i> {{ history.target.view_true|length|intcomma }}</div>
+                <div class="large_content_description_detail"><i class="far fa-comment"></i> {{ history.target.comment.all|length|intcomma }}</div>
+                <div class="large_content_description_detail"><i class="fas fa-list"></i> {{ history.target.mylist.all|length|intcomma }}</div>
+
+                <div class="large_content_description_detail"><i class="far fa-thumbs-up"></i> {{ history.target.good.all|length|intcomma }}</div>
+                <div class="large_content_description_detail"><i class="far fa-thumbs-down"></i> {{ history.target.bad.all|length|intcomma }}</div>
+                <div class="large_content_description_body">{{ history.target.description|truncatechars_html:20 }}</div>
+
+            </div>
+            <div class="large_content_control_area">
+                <button class="large_content_control_button history_delete_button" value="{{ history.id }}">履歴を削除</button>
+            </div>
+
+            <!--チェックモードの時、リンクを発動させないよう上からかぶせる。-->
+            <div class="large_content_inner_cover"></div>
+        </label>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<!--ここにページネーションを←無くても良いかも。-->
+
+{% comment %}
+{% for history in histories %}
+
+
+<div class="video_list_view">
+    <div class="video_list_thumbnail_area">
+        {% if history.target.thumbnail %}
+        <a class="video_list_thumbnail" href="{% url 'tube:single' history.target.id %}"><img src="{{ history.target.thumbnail.url }}" alt="thumbnail"></a>
+        {% else %}
+        <a class="video_list_thumbnail" href="{% url 'tube:single' history.target.id %}"><img src="{% static 'tube/img/no-img.png' %}" alt="thumbnail"></a>
+        {% endif %}
+    
+    </div>
+    <div class="video_list_description_area">
+        <div class="video_list_description_inner">
+            <h3 class="video_list_title"><a class="video_list_title_link" href="{% url 'tube:single' history.target.id %}">{{ history.target.title }}</a></h3>
+            <div>{{ history.target.user.handle_name }}</div>
+            <div>{{ history.target.description }}</div>
+            <div>視聴日時:{{ history.dt|date:"Y年m月d日 H時i分s秒" }} - {{ history.views }} 回視聴</div>
+        </div>
+    </div>
+
+</div>
+{% empty %}
+<p>視聴履歴はありません。</p>
+{% endfor %}
+
+{% endcomment %}

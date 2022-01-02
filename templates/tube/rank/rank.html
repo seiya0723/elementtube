@@ -1,0 +1,37 @@
+{% extends "tube/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+{{ block.super }}
+<script src="{% static 'tube/js/slider.js' %}"></script>
+{% endblock %}
+
+
+
+{% block main %}
+{% include "tube/search_form.html" %}
+<div class="ranking_header">
+    <h2>ランキング</h2>
+</div>
+
+<div class="ranking_body">
+
+    <input id="rank_tab_radio_1" class="rank_tab_radio" type="radio" name="rank_tab" checked>
+    <input id="rank_tab_radio_2" class="rank_tab_radio" type="radio" name="rank_tab">
+    <input id="rank_tab_radio_3" class="rank_tab_radio" type="radio" name="rank_tab">
+
+    <div class="rank_tab_label_area">
+        <label class="rank_tab_label" for="rank_tab_radio_1">デイリー</label>
+        <label class="rank_tab_label" for="rank_tab_radio_2">ウィークリー</label>
+        <label class="rank_tab_label" for="rank_tab_radio_3">マンスリー</label>
+    </div>
+
+    <!--TODO:ここはwithを使って、総合、カテゴリを引数にする-->
+    <div id="rank_tab_body_1" class="rank_tab_body">{% include "tube/rank/rank_area.html" with all_ranks=daily_all_ranks    cate_ranks=daily_cate_ranks   %}</div>
+    <div id="rank_tab_body_2" class="rank_tab_body">{% include "tube/rank/rank_area.html" with all_ranks=weekly_all_ranks   cate_ranks=weekly_cate_ranks  %}</div>
+    <div id="rank_tab_body_3" class="rank_tab_body">{% include "tube/rank/rank_area.html" with all_ranks=monthly_all_ranks  cate_ranks=monthly_cate_ranks %}</div>
+
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,17 @@
+{% if request.NEWS %}
+<div class="news_area">
+    <div id="news_slide_area" class="news_slide_area">
+        {% for n in request.NEWS %}
+        <a class="news" href="{% url 'tube:news_single' n.id %}">{{ n.title }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="search_form_area">
+    <form class="search_form" action="{% url 'tube:search' %}" method="GET">
+        <input class="search_form_word" type="text" name="word" value="{{ request.GET.word }}" placeholder="キーワード検索" >
+        <input class="search_form_submit" type="submit" value="検索">
+    </form>
+</div>
+

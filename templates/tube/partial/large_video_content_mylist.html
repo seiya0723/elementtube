@@ -1,0 +1,73 @@
+{% load static %}
+{% load humanize %}
+{% load param_change %}
+<div class="large_content_area">
+    <!--TODO:ここに未分類をそのまま表示-->
+    {% if folders.number == 1 %}
+    <div class="large_content">
+        <div class="large_content_inner">
+            <div class="large_content_views_area">
+                <div class="large_content_views_dt">-</div>
+            </div>
+            <a href="{% url 'tube:mylist_folder' %}">
+
+            <!--それぞれ必要な部分だけリンクタグで囲む-->
+            <div class="large_content_thumbnail_area" style="text-align:center;">
+                <!--とりあえず、この部分fontawesomeのフォルダアイコンで-->
+                {% if typical %}
+                <img src="{{ typical.target.thumbnail.url }}" alt="">
+                {% else %}
+                <i class="far fa-folder" style="font-size:5rem;"></i>
+                {% endif %}
+            </div>
+            <div class="large_content_description_area">
+                <div class="large_content_description_title">未分類</div>
+                <div class="large_content_description_body">未分類</div>
+                <div class="large_content_description_body">{{ contains }}件の動画</div>
+            </div>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for folder in folders %}
+    <div class="large_content">
+        <div class="large_content_inner">
+            <div class="large_content_views_area">
+                <div class="large_content_views_dt">{{ folder.dt|date:"Y年m月d日 H時i分s秒" }}</div>
+            </div>
+
+            <a href="{% url 'tube:mylist_folder_single' folder.id %}">
+
+            <!--それぞれ必要な部分だけリンクタグで囲む-->
+            <div class="large_content_thumbnail_area" style="text-align:center;">
+                <!--とりあえず、この部分fontawesomeのフォルダアイコンで-->
+                {% if folder.typical %}
+                <img src="{{ folder.typical.target.thumbnail.url }}" alt="">
+                {% else %}
+                <i class="far fa-folder" style="font-size:5rem;"></i>
+                {% endif %}
+            </div>
+            <div class="large_content_description_area">
+                <div class="large_content_description_title">{{ folder.title|truncatechars_html:15 }}</div>
+                <div class="large_content_description_body">{{ folder.description|truncatechars_html:20 }}</div>
+                <div class="large_content_description_body">{{ folder.contains }}件の動画</div>
+            </div>
+            </a>
+
+            <div class="large_content_control_area">
+                <button class="large_content_control_button mylist_folder_delete_button" value="{{ folder.id }}">フォルダを削除</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if folders.has_previous or folders.has_next %}
+<div class="pagination_area">
+    <a   class="pagination_content pagination_button" {% if folders.has_previous %}href="?{% url_replace request 'page' folders.previous_page_number %}"{% endif %}>Prev</a>
+    <div class="pagination_content">{{ folders.number }}</div>
+    <a   class="pagination_content pagination_button" {% if folders.has_next %}href="?{% url_replace request 'page' folders.next_page_number %}"{% endif %}>Next</a>
+</div>
+{% endif %}
+

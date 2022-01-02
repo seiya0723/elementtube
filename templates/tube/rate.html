@@ -1,0 +1,17 @@
+<form class="single_video_rating_content" action="{% url 'tube:single_mod' video.id %}">
+    {% csrf_token %}
+    <i class="fas fa-thumbs-up single_video_rating_button rating_good {% if already_good %}already_good{% endif %}"></i> 
+    <span class="rating_num">{{ video.good.all|length }}</span>
+</form>
+<form class="single_video_rating_content" action="{% url 'tube:single_mod' video.id %}">
+    {% csrf_token %}
+    <i class="fas fa-thumbs-down single_video_rating_button rating_bad {% if already_bad %}already_bad{% endif %}"></i>
+    <span class="rating_num">{{ video.bad.all|length }}</span>
+</form>
+<form id="mylist_form_area" class="single_video_rating_content" action="{% url 'tube:mylist' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="target" value="{{ video.id }}">
+    <i id="mylist_submit" class="far fa-list-alt single_video_rating_button rating_mylist {# {% if already_mylist %}already_mylist{% endif %} #}"></i>
+    <span class="rating_num">{{ video.mylist.all|length }}</span>
+</form>
+

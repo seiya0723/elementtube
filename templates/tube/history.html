@@ -1,0 +1,49 @@
+{% extends "tube/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+{{ block.super }}
+<script src="{% static 'tube/js/history.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+
+<h2>視聴履歴</h2>
+
+<div class="history_multi_area">
+    <input id="history_multi_chk" class="history_multi_chk" type="checkbox">
+    <div class="history_multi_delete multi_button">選択した履歴を削除</div>
+    <label class="history_multi_label" for="history_multi_chk">
+        <div class="history_multi_select multi_button">複数選択</div>
+        <div class="history_multi_cancel multi_button">キャンセル</div>
+    </label>
+</div>
+
+<!--レイアウトはマイページの投稿を参考に-->
+
+<!--
+TODO:全部、マイリストした履歴、コメント投稿した履歴等の絞り込みを用意
+
+CHECK:削除されたときの挙動は？→全てのタブを更新？
+→表示中のタブだけ更新し、別タブがクリックされるとリクエスト？
+↑負荷はほぼ同じ？ビューが煩雑になるのはおそらく後者。ただし、タブが増えていけば前者は負荷がかかると思われる？
+-->
+
+<input id="history_tab_radio_1" class="history_tab_radio" type="radio" name="history_tab" checked>
+<input id="history_tab_radio_2" class="history_tab_radio" type="radio" name="history_tab">
+<input id="history_tab_radio_3" class="history_tab_radio" type="radio" name="history_tab">
+<input id="history_tab_radio_4" class="history_tab_radio" type="radio" name="history_tab">
+
+<div class="history_tab_label_area">
+    <label class="history_tab_label" for="history_tab_radio_1">全部</label>
+    <label class="history_tab_label" for="history_tab_radio_2">良いねした</label>
+    <label class="history_tab_label" for="history_tab_radio_3">マイリスト投稿した</label>
+    <label class="history_tab_label" for="history_tab_radio_4">コメント投稿した</label>
+</div>
+
+<div id="history_tab_body_1" class="history_tab_body">{% include "tube/partial/large_video_content_history.html" %}</div>
+<div id="history_tab_body_2" class="history_tab_body">{% include "tube/partial/large_video_content_history.html" with histories=good_histories %}</div>
+<div id="history_tab_body_3" class="history_tab_body">{% include "tube/partial/large_video_content_history.html" with histories=mylist_histories %}</div>
+<div id="history_tab_body_4" class="history_tab_body">{% include "tube/partial/large_video_content_history.html" with histories=comment_histories %}</div>
+
+{% endblock %}

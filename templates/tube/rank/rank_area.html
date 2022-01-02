@@ -1,0 +1,61 @@
+{% load static %}
+{% load humanize %}
+
+{% if all_ranks %}
+<div>
+    <h3>総合部門</h3>
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for all_rank in all_ranks %}
+            <div class="data_preview_frame">
+                <div class="data_preview_header rank_header">{{ forloop.counter }}位 {{ all_rank.score }}pt</div>
+                <a href="{% url 'tube:single' all_rank.target.id  %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ all_rank.target.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ all_rank.target.title }}</div>
+                </a>
+                <div class="data_preview_description_detail"><i class="far fa-play-circle"></i> {{ all_rank.target.view_true|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="far fa-comment"></i> {{ all_rank.target.comment.all|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="fas fa-list"></i> {{ all_rank.target.mylist.all|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="far fa-thumbs-up"></i> {{ all_rank.target.good.all|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="far fa-thumbs-down"></i> {{ all_rank.target.bad.all|length|intcomma }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% for cate_rank in cate_ranks %}
+<div>
+
+    {% if cate_rank %}
+    <h3>{{ cate_rank.category }}部門</h3>
+    
+    <div class="preview_control_area">
+        <div class="control_button previous_button"><i class="fas fa-chevron-left"></i></div>
+        <div class="data_preview_area">
+            {% for rank in cate_rank.ranks %}
+            <div class="data_preview_frame">
+                <div class="data_preview_header rank_header">{{ forloop.counter }}位 {{ rank.score }}pt</div>
+                <a href="{% url 'tube:single' rank.target.id %}" class="data_preview_content">
+                    <div class="data_preview_content_thumbnail"><img src="{{ rank.target.thumbnail.url }}" alt=""></div>
+                    <div class="data_preview_content_title">{{ rank.target.title }}</div>
+                </a>
+                <div class="data_preview_description_detail"><i class="far fa-play-circle"></i> {{ rank.target.view_true|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="far fa-comment"></i> {{ rank.target.comment.all|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="fas fa-list"></i> {{ rank.target.mylist.all|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="far fa-thumbs-up"></i> {{ rank.target.good.all|length|intcomma }}</div>
+                <div class="data_preview_description_detail"><i class="far fa-thumbs-down"></i> {{ rank.target.bad.all|length|intcomma }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="control_button next_button"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    {% endif %}
+
+</div>
+{% endfor %}

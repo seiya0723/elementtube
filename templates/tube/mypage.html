@@ -1,0 +1,49 @@
+{% extends "tube/base.html" %}
+{% load static %}
+
+
+{% block extra_head %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block main %}
+
+    {% include "tube/search_form.html" %}
+
+    <h2>基本情報</h2>
+
+    <table>
+        <tr>
+            <td>ユーザー名</td>
+            <td>{{ request.user }}</td>
+        </tr>
+        <tr>
+            <td>最終ログイン</td>
+            <td>{{ request.user.last_login }}</td>
+        </tr>
+        <tr>
+            <td>メールアドレス</td>
+            <td>{{ request.user.email }}</td>
+        </tr>
+    </table>
+
+    
+    <input id="mypage_tab_radio_1" class="mypage_tab_radio" type="radio" name="mypage_tab" checked>
+    <input id="mypage_tab_radio_2" class="mypage_tab_radio" type="radio" name="mypage_tab">
+    <input id="mypage_tab_radio_3" class="mypage_tab_radio" type="radio" name="mypage_tab">
+    <input id="mypage_tab_radio_4" class="mypage_tab_radio" type="radio" name="mypage_tab">
+
+    <div class="mypage_tab_label_area">
+        <label class="mypage_tab_label" for="mypage_tab_radio_1">投稿した動画</label>
+        <label class="mypage_tab_label" for="mypage_tab_radio_2">良いねした動画</label>
+        <label class="mypage_tab_label" for="mypage_tab_radio_3">マイリストした動画</label>
+        <label class="mypage_tab_label" for="mypage_tab_radio_4">コメントした動画</label>
+    </div>
+
+    <div id="mypage_tab_body_1" class="mypage_tab_body">{% include "tube/partial/video_content.html" %}</div>
+    <div id="mypage_tab_body_2" class="mypage_tab_body">{% include "tube/partial/video_content.html" with videos=good_videos %}</div>
+    <div id="mypage_tab_body_3" class="mypage_tab_body">{% include "tube/partial/video_content.html" with videos=mylist_videos %}</div>
+    <div id="mypage_tab_body_4" class="mypage_tab_body">{% include "tube/partial/video_content.html" with videos=comment_videos %}</div>
+
+{% endblock %}

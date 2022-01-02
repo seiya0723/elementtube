@@ -1,0 +1,57 @@
+{% extends "tube/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+{{ block.super }}
+<script src="{% static 'tube/js/thumbs.js' %}"></script>
+<script src="{% static 'tube/js/upload.js' %}"></script>
+{% endblock %}
+
+
+
+
+{% block main %}
+
+
+<h2>動画アップロード</h2>
+
+
+<ul>
+    <li>mp4ファイルのみ対応しています</li>
+    <li>ファイルサイズは上限 {{ limit_size }}MB です</li>
+</ul>
+
+<div id="upload_message" class="upload_message"></div>
+
+<form id="video_upload_form" action="{% url 'tube:upload' %}" method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <select class="select_form" name="category">
+        <option value="">カテゴリを選択してください</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% empty %}
+        <option value="">カテゴリがありません。</option>
+        {% endfor %}
+    </select>
+    <input class="input_form_text" name="title" type="text" placeholder="タイトル" maxlength="50">
+    <textarea class="textarea_form" name="description" rows="4" placeholder="動画説明文" maxlength="300"></textarea>
+    <input id="upload_form_video" type="file" name="content">
+
+    <!--TODO:ここのサムネイルの選択画面はradioボタンで選択式にして、Ajax送信時にラジオボタンのチェックの値によって処理を切り分ける仕組みに仕立てる。
+        サーバーに自動指定させる方式、オリジナルの画像アップロード、動画からサムネイル作成の3つを選べる形式にする。
+    -->
+    <div class="thumbnail_create_area">
+        <div class="thumbnail_create_video"><video id="thumbnail_video" class="thumbnail_video" src="" controls muted></video></div>
+        <div class="thumbnail_create_button"><button id="thumbnail_button" class="thumbnail_button" type="button"><i class="far fa-images"></i>サムネイル指定</button></div>
+        <div class="thumbnail_create_canvas"><div class="thumbnail_create_canvas_explain">ここにサムネイルが表示される</div><canvas id="canvas"></canvas></div>
+    </div>
+
+    <input id="upload" class="input_form_button" type="button" value="送信">
+
+</form>
+
+
+
+
+{% endblock %}

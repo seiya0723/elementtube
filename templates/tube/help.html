@@ -1,0 +1,49 @@
+{% extends "tube/base.html" %}
+
+{% block extra_head %}
+{{ block.super}}
+{% endblock %}
+
+{% block main %}
+
+<h2>ヘルプ</h2>
+
+<input id="help_tab_radio_1" class="help_tab_radio" type="radio" name="help_tab">
+<input id="help_tab_radio_2" class="help_tab_radio" type="radio" name="help_tab" checked>
+
+<div class="help_tab_label_area">
+    <label class="help_tab_label" for="help_tab_radio_1">お問い合わせフォーム</label>
+    <label class="help_tab_label" for="help_tab_radio_2">よくあるお問い合わせ</label>
+</div>
+
+<div id="help_tab_body_1" class="help_tab_body">
+    <h3>お問い合わせフォーム</h3>
+
+    <form class="mylist_form" action="{% url 'tube:help' %}" method="POST">
+        {% csrf_token %}
+        <textarea class="textarea_form" name="contact" maxlength="1000" placeholder="ここにお問い合わせ内容をご記入ください。"></textarea>
+        <input class="input_form_button" type="submit" value="送信">
+    </form>
+
+</div>
+<div id="help_tab_body_2" class="help_tab_body">
+
+    <h3>よくあるお問い合わせ</h3>
+
+    <div class="search_form_area">
+        <form class="search_form" action="{% url 'tube:help' %}" method="GET">
+            <input class="search_form_word" type="text" name="search" value="{{ request.GET.word }}" placeholder="お問い合わせ検索" >
+            <input class="search_form_submit" type="submit" value="検索">
+        </form>
+    </div>
+
+    {% for faq in faqs %}
+    <div class="faq_area">
+        <div class="faq_question">{{ faq.question }}</div>
+        <div class="faq_answer">{{ faq.answer|linebreaksbr }}</div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
+
